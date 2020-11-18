@@ -12,7 +12,7 @@ import CoreData
 class ViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     
-    var people: [NSManagedObject] = []
+    var people: [Person] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             [unowned self] action in
                                           
             guard let textField = alert.textFields?.first,
-              let nameToSave =  textField.text else {
+              let nameToSave = textField.text else {
                 return
             }
             self.save(name: nameToSave)
@@ -68,12 +68,7 @@ class ViewController: UIViewController {
         appDelegate.persistentContainer.viewContext
       
       // 2
-      let entity =
-        NSEntityDescription.entity(forEntityName: "Person",
-                                   in: managedContext)!
-      
-      let person = NSManagedObject(entity: entity,
-                                   insertInto: managedContext)
+      let person = Person(context: managedContext)
       
       // 3
       person.setValue(name, forKeyPath: "name")
@@ -86,9 +81,7 @@ class ViewController: UIViewController {
         print("Could not save. \(error), \(error.userInfo)")
       }
     }
-
-
-    }
+}
     
 
 
