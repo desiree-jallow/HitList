@@ -22,9 +22,14 @@ class ViewController: UIViewController {
           tableView.register(UITableViewCell.self,
                              forCellReuseIdentifier: "Cell")
         }
+    override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+        let fetchRequest =
+          NSFetchRequest<Person>(entityName: "Person")
+        fetch(with: fetchRequest)
+    }
 
 
-    
     @IBAction func addName(_ sender: UIBarButtonItem) {
         // Implement the addName IBAction
         
@@ -56,6 +61,7 @@ class ViewController: UIViewController {
           present(alert, animated: true)
         }
     
+//MARK: - Save function
     func save(name: String) {
       //get reference to the app delegate
       guard let appDelegate =
@@ -80,6 +86,25 @@ class ViewController: UIViewController {
       } catch let error as NSError {
         print("Could not save. \(error), \(error.userInfo)")
       }
+    }
+//MARK: - Fetch function
+    func fetch(with fetchRequest: NSFetchRequest<Person>) {
+        
+        //get access to app delegate
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        //get referenct to persistent container
+        let managedContext =
+          appDelegate.persistentContainer.viewContext
+        
+        //fetch items
+        do {
+          people = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
 }
     
