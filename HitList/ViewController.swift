@@ -57,23 +57,23 @@ class ViewController: UIViewController {
         }
     
     func save(name: String) {
-      
+      //get reference to the app delegate
       guard let appDelegate =
         UIApplication.shared.delegate as? AppDelegate else {
         return
       }
       
-      // 1
+      // get access to persistant container
       let managedContext =
         appDelegate.persistentContainer.viewContext
       
-      // 2
+      // create new person object
       let person = Person(context: managedContext)
       
-      // 3
+      // set name attribute using key value coding
       person.setValue(name, forKeyPath: "name")
       
-      // 4
+      // save changes and add person to people array
       do {
         try managedContext.save()
         people.append(person)
